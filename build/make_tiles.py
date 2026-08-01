@@ -79,7 +79,9 @@ def main():
             log(f"[2/3] tippecanoe z{a.minzoom}-{a.maxzoom}")
             subprocess.run(["tippecanoe", "-o", out, "-l", "buildings",
                             "-Z", str(a.minzoom), "-z", str(a.maxzoom),
-                            "--drop-densest-as-needed", "--no-tile-size-limit",
+                            # keep tippecanoe's tile size cap: without it the z11
+                            # tile holds the whole city, ~7 MB before anything paints
+                            "--drop-densest-as-needed",
                             "--force", "-q", nd], check=True)
         finally:
             os.unlink(nd)
