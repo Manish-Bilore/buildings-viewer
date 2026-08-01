@@ -2,7 +2,7 @@
    Everything the UI shows is derived from cities.json + the MODES table below,
    so adding a city (or an attribute) needs no changes here. */
 
-const REPO = "";   // e.g. "https://github.com/you/buildings-viewer" - shown in the about panel
+const REPO = "https://github.com/Manish-Bilore/buildings-viewer";   // e.g. "https://github.com/you/buildings-viewer" - shown in the about panel
 const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 const LAYER = "buildings";          // tippecanoe layer name, see build/make_tiles.py
 
