@@ -137,6 +137,27 @@ from a city are hidden automatically.
 - `typo_src` records how each typology was assigned — `heuristic_default`
   covers 65% of buildings, so colour by *typology rule* before trusting the
   typology map.
+
+## Data
+
+Footprints and heights: **GlobalBuildingAtlas** (TU Munich), derived from
+PlanetScope imagery and fused with existing open footprint sets. The `source`
+attribute carries the upstream provenance of each polygon.
+
+> Zhu, X. X., Chen, S., Zhang, F., Shi, Y., Wang, Y. (2025). GlobalBuildingAtlas:
+> an open global and complete dataset of building polygons, heights and LoD1 3D
+> models. *Earth System Science Data* 17(12), 6647–6668.
+> <https://doi.org/10.5194/essd-17-6647-2025>
+
+Typology: inferred from **Overture Maps** places — tenants within the footprint,
+then anchors nearby, then a size-and-height fallback.
+
+Check both licences before treating this as a public release. GBA is a mix:
+its own notes flag that footprints taken from ODbL sources sit awkwardly beside
+its PlanetScope-derived layers, which carry a non-commercial condition.
+Overture's places theme has its own terms. Neither is a blanket "open, do as
+you like", and the attribution string in `app.js` is a credit line, not a
+licence statement.
 - To run fully offline, save `maplibre-gl.js`, `maplibre-gl.css` and
   `pmtiles.js` next to `app.js`, point the tags in `index.html` at them, and
   swap `BASEMAP` for a blank style: `{"version":8,"sources":{},"layers":[]}`.

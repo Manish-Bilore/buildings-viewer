@@ -53,13 +53,17 @@
   <div id="legend"></div>
 
   <section id="about" hidden>
-    <p>Building footprints for Greater Mumbai, each carrying a roof height and an
-      inferred use. Colour, filter and click anything to read its attributes.</p>
-    <p>Footprints and heights come from Google's open building data and from
-      OpenStreetMap. Use is inferred: from OSM tenants and nearby anchors where
-      they exist, and from a size-and-height heuristic where they don't.
-      <b id="fallback"></b> of buildings fall back to that heuristic, so read the
-      typology as a first pass rather than a survey — colour by
+    <p>Building footprints and heights come from
+      <a href="https://github.com/zhu-xlab/GlobalBuildingAtlas">GlobalBuildingAtlas</a>
+      (TU Munich), derived from PlanetScope imagery and fused with existing open
+      footprint sets. Colour by <em>data source</em> to see which set each
+      footprint came from. Heights are model estimates rather than surveys —
+      the paper reports errors of roughly 1.5–9 m depending on region.</p>
+    <p>Use is inferred by matching each footprint against places from
+      <a href="https://overturemaps.org">Overture Maps</a>: tenants within the
+      footprint first, then anchors nearby. <b id="fallback"></b> of buildings
+      have no place to match and fall back to a size-and-height heuristic, so
+      read the typology as a first pass rather than a survey — colour by
       <em>typology rule</em> to see which buildings were actually evidenced.</p>
     <p id="repo"></p>
   </section>

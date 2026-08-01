@@ -197,7 +197,7 @@ function setBasemap(k) {
     container: "map", style: BASEMAPS[state.base],
     center: [(b0[0] + b0[2]) / 2, (b0[1] + b0[3]) / 2], zoom: 11,
     pitch: 45, hash: true,
-    attributionControl: { compact: true, customAttribution: "Buildings: Google Open Buildings, OpenStreetMap" },
+    attributionControl: { compact: true, customAttribution: "Buildings: GlobalBuildingAtlas (TUM) | Places: Overture Maps" },
   });
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
   map.addControl(new maplibregl.ScaleControl({ maxWidth: 90 }), "bottom-right");
