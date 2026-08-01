@@ -2,8 +2,11 @@
    Everything the UI shows is derived from cities.json + the MODES table below,
    so adding a city (or an attribute) needs no changes here. */
 
-const REPO = "https://github.com/Manish-Bilore/buildings-viewer";   // e.g. "https://github.com/you/buildings-viewer" - shown in the about panel
-const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+const REPO = "";   // e.g. "https://github.com/you/buildings-viewer" - shown in the about panel
+const BASEMAPS = {
+  dark:  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+};
 const LAYER = "buildings";          // tippecanoe layer name, see build/make_tiles.py
 
 /* Categorical colours, assigned in descending frequency order. */
@@ -27,7 +30,8 @@ const fmt = (n) => n.toLocaleString("en-IN");
 const el = (tag, attrs = {}, html = "") =>
   Object.assign(document.createElement(tag), { innerHTML: html, ...attrs });
 
-const state = { city: null, mode: "typology", hmin: 0, hmax: 0, exag: 1, off: new Set() };
+const state = { city: null, mode: "typology", hmin: 0, hmax: 0, exag: 1, off: new Set(),
+                base: localStorage.getItem("base") in BASEMAPS ? localStorage.getItem("base") : "dark" };
 let registry, city, map, colours = {};
 
 /* ---------- expressions ---------- */
@@ -128,6 +132,21 @@ function setCity(slug, fit = true) {
   map.setMinZoom(city.zoom[0]);
   map.setMaxZoom(city.zoom[1] + 4);
 
+  mount();
+  if (fit)
+    map.fitBounds(city.bounds, { padding: { top: 40, bottom: 40, left: 300, right: 40 }, duration: 0 });
+}
+
+/* extrusions need a light source; a light basemap needs a brighter one */
+const lighting = () => map.setLight({
+  anchor: "viewport", color: "#ffffff", position: [1.2, 200, 30],
+  intensity: state.base === "light" ? 0.5 : 0.35,
+});
+
+/* (re)attach the source and extrusion layer to whatever style is loaded.
+   Lighting goes last: it is cosmetic, and if it ever throws it must not take
+   the layer down with it. */
+function mount() {
   if (map.getLayer(LAYER)) map.removeLayer(LAYER);
   if (map.getSource("city")) map.removeSource("city");
   map.addSource("city", { type: "vector", url: `pmtiles://${city.tiles}` });
@@ -142,10 +161,29 @@ function setCity(slug, fit = true) {
       "fill-extrusion-opacity": 0.92,
     },
   }, firstSymbol);
-
-  if (fit)
-    map.fitBounds(city.bounds, { padding: { top: 40, bottom: 40, left: 300, right: 40 }, duration: 0 });
   apply();
+  lighting();
+}
+
+function setBasemap(k) {
+  state.base = k;
+  localStorage.setItem("base", k);
+  document.body.classList.toggle("light", k === "light");
+  [...$("base").children].forEach((b) => b.setAttribute("aria-pressed", b.textContent === k));
+  /* Carry the source and layer into the new style rather than rebuilding them:
+     transformStyle runs before the swap is applied, so the tiles are never
+     dropped and no state is lost. mount() stays as a fallback. */
+  map.setStyle(BASEMAPS[k], {
+    transformStyle: (prev, next) => {
+      const ours = prev?.layers.find((l) => l.id === LAYER);
+      if (!ours) return next;
+      const layers = [...next.layers];
+      const i = layers.findIndex((l) => l.type === "symbol");
+      layers.splice(i < 0 ? layers.length : i, 0, ours);
+      return { ...next, sources: { ...next.sources, city: prev.sources.city }, layers };
+    },
+  });
+  map.once("styledata", () => (map.getLayer(LAYER) ? lighting() : mount()));
 }
 
 /* ---------- boot ---------- */
@@ -156,7 +194,7 @@ function setCity(slug, fit = true) {
 
   const b0 = Object.values(registry)[0].bounds;
   map = new maplibregl.Map({
-    container: "map", style: BASEMAP,
+    container: "map", style: BASEMAPS[state.base],
     center: [(b0[0] + b0[2]) / 2, (b0[1] + b0[3]) / 2], zoom: 11,
     pitch: 45, hash: true,
     attributionControl: { compact: true, customAttribution: "Buildings: Google Open Buildings, OpenStreetMap" },
@@ -171,6 +209,13 @@ function setCity(slug, fit = true) {
   $("title").hidden = many;
   $("city").replaceChildren(...Object.entries(registry).map(([k, v]) =>
     el("option", { value: k }, v.label)));
+  document.body.classList.toggle("light", state.base === "light");
+  $("base").replaceChildren(...Object.keys(BASEMAPS).map((k) => {
+    const b = el("button", { type: "button" }, k);
+    b.setAttribute("aria-pressed", k === state.base);
+    b.onclick = () => setBasemap(k);
+    return b;
+  }));
   $("exag").replaceChildren(...[1, 2, 3].map((x) => {
     const b = el("button", { type: "button" }, `${x}×`);
     b.setAttribute("aria-pressed", x === state.exag);
@@ -182,10 +227,7 @@ function setCity(slug, fit = true) {
     return b;
   }));
 
-  map.on("load", () => {
-    map.setLight({ anchor: "viewport", color: "#ffffff", intensity: 0.35, position: [1.2, 200, 30] });
-    setCity(Object.keys(registry)[0], !location.hash);
-  });
+  map.on("load", () => setCity(Object.keys(registry)[0], !location.hash));
 
   $("city").onchange = (e) => setCity(e.target.value);
   $("mode").onchange = (e) => { state.mode = e.target.value; state.off.clear(); apply(); };

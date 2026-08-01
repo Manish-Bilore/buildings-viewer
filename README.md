@@ -23,6 +23,7 @@ doesn't. Internet is required for the CDN scripts and the CARTO basemap.
 | height | min/max filter in metres |
 | scale | vertical exaggeration — most of Mumbai is under 5 m, so ×2/×3 helps |
 | 3D | toggle pitch |
+| base | dark or light basemap — the panel follows, the data keeps its colours |
 | legend row | click to hide a class, shift-click to isolate it |
 | building | click for the full attribute row |
 
@@ -123,7 +124,8 @@ public/cities.json       generated registry
 public/data/*.pmtiles    generated tiles
 ```
 
-To add a colour mode, add one entry to `MODES` in `app.js`. An entry with
+To add a basemap, add one entry to `BASEMAPS` in `app.js`; the toggle is built
+from its keys. To add a colour mode, add one entry to `MODES`. An entry with
 `stops` is continuous, one without is categorical; modes whose field is absent
 from a city are hidden automatically.
 

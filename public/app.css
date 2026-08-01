@@ -5,7 +5,18 @@
   --line: #22262c;
   --ink: #e6e8ea;
   --dim: #6d747d;
+  --off: #4a5057;
   --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* the chrome follows the basemap; the data keeps its colours either way */
+body.light {
+  --bg: #f2f3f5;
+  --panel: rgba(250, 250, 251, .92);
+  --line: #d5d9de;
+  --ink: #14171a;
+  --dim: #737a83;
+  --off: #b6bbc1;
 }
 
 * { box-sizing: border-box; }
@@ -60,8 +71,8 @@ input[type=number] { width: 52px; text-align: right; font-variant-numeric: tabul
   display: flex; align-items: center; gap: 7px; width: 100%; padding: 2px 0;
   border: 0; cursor: pointer; text-align: left; color: var(--ink);
 }
-.key:hover { color: #fff; }
-.key[data-off=true] { color: #4a5057; }
+.key:hover { color: var(--ink); filter: brightness(1.15); }
+.key[data-off=true] { color: var(--off); }
 .key i { width: 9px; height: 9px; flex: none; display: block; }
 .key[data-off=true] i { opacity: .18; }
 .key b { flex: 1; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

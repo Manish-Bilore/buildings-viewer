@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mumbai building typology</title>
-<meta name="description" content="673,583 building footprints in Mumbai, each with a height and an inferred use. An interactive 3D map.">
+<meta name="description" content="673,583 building footprints in Greater Mumbai, each with a height and an inferred use. An interactive 3D map.">
 <meta property="og:title" content="Mumbai building typology">
 <meta property="og:description" content="673,583 building footprints, each with a height and an inferred use.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://manish-bilore.github.io/buildings-viewer/card.png">
+<meta property="og:image" content="card.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%230a0b0d%27/%3E%3Crect x=%272%27 y=%277%27 width=%273%27 height=%277%27 fill=%27%234c78a8%27/%3E%3Crect x=%276%27 y=%273%27 width=%273%27 height=%2711%27 fill=%27%23f58518%27/%3E%3Crect x=%2710%27 y=%278%27 width=%274%27 height=%276%27 fill=%27%2372b7b2%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,13 +45,18 @@
     <button id="pitch" class="seg-btn" type="button">3D</button>
   </div>
 
+  <div class="row">
+    <label>base</label>
+    <div id="base" class="seg"></div>
+  </div>
+
   <div id="legend"></div>
 
   <section id="about" hidden>
-    <p>Building footprints for Mumbai, each carrying a roof height and an
+    <p>Building footprints for Greater Mumbai, each carrying a roof height and an
       inferred use. Colour, filter and click anything to read its attributes.</p>
-    <p>Footprints and heights come from GlobalBuildingAtlas's open building data and from
-      Overture Maps. Use is inferred: from OSM tenants and nearby anchors where
+    <p>Footprints and heights come from Google's open building data and from
+      OpenStreetMap. Use is inferred: from OSM tenants and nearby anchors where
       they exist, and from a size-and-height heuristic where they don't.
       <b id="fallback"></b> of buildings fall back to that heuristic, so read the
       typology as a first pass rather than a survey — colour by
