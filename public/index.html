@@ -45,11 +45,6 @@
     <button id="pitch" class="seg-btn" type="button">3D</button>
   </div>
 
-  <div class="row">
-    <label>base</label>
-    <div id="base" class="seg"></div>
-  </div>
-
   <div id="legend"></div>
 
   <section id="about" hidden>
@@ -57,8 +52,9 @@
       <a href="https://github.com/zhu-xlab/GlobalBuildingAtlas">GlobalBuildingAtlas</a>
       (TU Munich), derived from PlanetScope imagery and fused with existing open
       footprint sets. Colour by <em>data source</em> to see which set each
-      footprint came from. Heights are model estimates rather than surveys —
-      the paper reports errors of roughly 1.5–9 m depending on region.</p>
+      footprint came from. The height model is not calibrated for Indian
+      cities — treat heights as indicative of relative form rather than as
+      measurements.</p>
     <p>Use is inferred by matching each footprint against places from
       <a href="https://overturemaps.org">Overture Maps</a>: tenants within the
       footprint first, then anchors nearby. <b id="fallback"></b> of buildings

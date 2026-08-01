@@ -23,7 +23,6 @@ doesn't. Internet is required for the CDN scripts and the CARTO basemap.
 | height | min/max filter in metres |
 | scale | vertical exaggeration — most of Mumbai is under 5 m, so ×2/×3 helps |
 | 3D | toggle pitch |
-| base | dark or light basemap — the panel follows, the data keeps its colours |
 | legend row | click to hide a class, shift-click to isolate it |
 | building | click for the full attribute row |
 
@@ -124,8 +123,7 @@ public/cities.json       generated registry
 public/data/*.pmtiles    generated tiles
 ```
 
-To add a basemap, add one entry to `BASEMAPS` in `app.js`; the toggle is built
-from its keys. To add a colour mode, add one entry to `MODES`. An entry with
+To add a colour mode, add one entry to `MODES` in `app.js`. An entry with
 `stops` is continuous, one without is categorical; modes whose field is absent
 from a city are hidden automatically.
 
@@ -133,6 +131,9 @@ from a city are hidden automatically.
 
 - Tiles are z11–15 and overzoom to 19. Below z11 there is no data, so the map's
   minimum zoom is clamped to the tileset's.
+- The basemap draws its own building polygons, which compete with the
+  extrusions. `hideBasemapBuildings()` switches off any style layer whose id or
+  source-layer mentions buildings, so a different basemap needs no other change.
 - Attribute rounding is 2 dp and coordinates 6 dp, which is roughly 10 cm.
 - `typo_src` records how each typology was assigned — `heuristic_default`
   covers 65% of buildings, so colour by *typology rule* before trusting the
@@ -143,6 +144,12 @@ from a city are hidden automatically.
 Footprints and heights: **GlobalBuildingAtlas** (TU Munich), derived from
 PlanetScope imagery and fused with existing open footprint sets. The `source`
 attribute carries the upstream provenance of each polygon.
+
+The height model is not calibrated for Indian cities. Heights carry relative
+signal — a tower still reads taller than a chawl — but absolute values are not
+measurements and shouldn't be reported as such. Calibrating them against local
+data is open work, and until it's done, analyses should lean on rank and
+distribution rather than metres.
 
 > Zhu, X. X., Chen, S., Zhang, F., Shi, Y., Wang, Y. (2025). GlobalBuildingAtlas:
 > an open global and complete dataset of building polygons, heights and LoD1 3D
