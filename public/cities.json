@@ -1,0 +1,56 @@
+{
+ "mumbai": {
+  "label": "Mumbai",
+  "tiles": "data/mumbai.pmtiles",
+  "bounds": [
+   72.778104,
+   18.883614,
+   72.9934369,
+   19.2815899
+  ],
+  "zoom": [
+   11,
+   15
+  ],
+  "count": 673583,
+  "cats": {
+   "typology_label": {
+    "Residential": 437508,
+    "Commercial / Retail": 87360,
+    "Industrial": 29015,
+    "Health / Medical": 27189,
+    "Religious": 26722,
+    "Educational": 26239,
+    "Mixed Use": 17992,
+    "Transport": 8771,
+    "Recreational / Open Space": 5150,
+    "Cultural / Heritage": 4407,
+    "Government / Civic": 2879,
+    "Utilities / Power": 351
+   },
+   "typo_src": {
+    "heuristic_default": 436737,
+    "anchor_nearby": 139110,
+    "tenant_commercial": 70531,
+    "tenant_mixed": 17992,
+    "anchor_contained": 7791,
+    "heuristic_large_tall": 1326,
+    "heuristic_industrial": 96
+   },
+   "source": {
+    "google": 569734,
+    "osm": 103849
+   }
+  },
+  "nums": {
+   "height": [
+    0.01,
+    143.54
+   ],
+   "area_m2": [
+    0.58,
+    143745.4
+   ]
+  }
+ }
+}
